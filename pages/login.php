@@ -11,9 +11,7 @@ include '../includes/header.php';
     <input type="password" id="password" name="password" required><br><br>
     
     <input type="submit" value="Se connecter">
-    <?php
-        if(isset($_GET["msg"]))  echo "<h3>",$_GET['msg'],"</h3>";
-        ?>
+    
 </form>
 
 

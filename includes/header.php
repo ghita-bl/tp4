@@ -1,6 +1,4 @@
-<?php
-session_start(); // Démarrer la session pour accéder aux variables de session
-?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,8 +14,7 @@ session_start(); // Démarrer la session pour accéder aux variables de session
                 <img src="../images/logo.jpg" alt="logo" style="vertical-align: middle; width: 30px; height: 30px"/>
                 INPT.EDU
             </div>
-            <input type="checkbox" id="checkbox">
-            <label for="checkbox" id="icon">...</label>
+            
             <ul>
                 <li><a href="../pages/index.php" class="active">Accueil</a></li>
                 <?php
@@ -38,4 +35,4 @@ session_start(); // Démarrer la session pour accéder aux variables de session
             </ul>
         </nav>
     </header>
-    <main></main>
+    
