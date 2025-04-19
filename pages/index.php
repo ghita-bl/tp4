@@ -12,7 +12,16 @@ include '../includes/header.php';
 include '../includes/nav.php';
 ?>
 <body>
+<?php
+    if (isset($_SESSION['profil'])) {
+        // Display welcome message with name if available
+        if (isset($_SESSION['nom']) && isset($_SESSION['prenom'])) {
+            echo '<div class="welcome-message">Bienvenue, ' . htmlspecialchars($_SESSION['prenom']) . ' ' . htmlspecialchars($_SESSION['nom']) . '</div>';
+        }
+    }
+    ?>
     <h1>Bienvenue à INPT.EDU</h1>
+    
     <section>
         <h2>Projet de Fin d'Études (PFE)</h2>
         <p>
