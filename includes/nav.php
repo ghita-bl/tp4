@@ -3,15 +3,20 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Define base URL for the project if not already defined
+if (!isset($base_url)) {
+    $base_url = '/tp4';
+}
 ?>
 
 <nav class="navbar">
     <div class="nav-brand">
-        <a href="../pages/index.php">Aceuil</a>
+        <a href="<?php echo $base_url; ?>/pages/index.php"><i class="fas fa-graduation-cap"></i> INPT.EDU</a>
     </div>
     
     <div class="nav-search">
-        <form action="../search.php" method="GET" class="search-form">
+        <form action="<?php echo $base_url; ?>/search.php" method="GET" class="search-form">
             <input type="text" name="q" placeholder="Rechercher par mots-clés (titre, étudiant, organisme...)" class="search-input">
             <button type="submit" class="search-button">
                 <i class="fas fa-search"></i>
@@ -22,102 +27,17 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="nav-links">
         <?php if (isset($_SESSION['id'])): ?>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="../pages/admin_dashboard.php">Dashboard Admin</a>
-                <a href="../admin/crudpfes.php">Gérer les PFEs</a>
-                <a href="../admin/statistiques.php">Statistiques</a>
+                <a href="<?php echo $base_url; ?>/pages/admin_dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="<?php echo $base_url; ?>/admin/crudpfes.php"><i class="fas fa-tasks"></i> Gérer les PFEs</a>
+                <a href="<?php echo $base_url; ?>/admin/statistiques.php"><i class="fas fa-chart-bar"></i> Statistiques</a>
             <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'enseignant'): ?>
-                <a href="../pages/enseignant_portal.php">Portail Encadrant</a>
+                <a href="<?php echo $base_url; ?>/pages/enseignant_portal.php"><i class="fas fa-chalkboard-teacher"></i> Portail Encadrant</a>
             <?php else: ?>
-                <a href="../pages/etudiant_portal.php">Portail Étudiant</a>
+                <a href="<?php echo $base_url; ?>/pages/etudiant_portal.php"><i class="fas fa-user-graduate"></i> Portail Étudiant</a>
             <?php endif; ?>
-            <a href="../pages/logout.php">Déconnexion</a>
+            <a href="<?php echo $base_url; ?>/pages/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
         <?php else: ?>
-            <a href="../pages/login.php">Connexion</a>
+            <a href="<?php echo $base_url; ?>/pages/login.php" class="login-btn"><i class="fas fa-sign-in-alt"></i> Connexion</a>
         <?php endif; ?>
     </div>
 </nav>
-
-<style>
-    .navbar {
-        background-color: #2c3e50;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .nav-brand a {
-        color: white;
-        text-decoration: none;
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .nav-search {
-        flex: 1;
-        max-width: 500px;
-        margin: 0 2rem;
-    }
-
-    .search-form {
-        display: flex;
-        width: 100%;
-    }
-
-    .search-input {
-        flex: 1;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px 0 0 4px;
-        font-size: 1rem;
-    }
-
-    .search-button {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 0 4px 4px 0;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .search-button:hover {
-        background-color: #2980b9;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .nav-links a {
-        color: white;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
-
-    .nav-links a:hover {
-        background-color: rgba(255,255,255,0.1);
-    }
-
-    @media (max-width: 768px) {
-        .navbar {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .nav-search {
-            width: 100%;
-            margin: 1rem 0;
-        }
-
-        .nav-links {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-    }
-</style>
