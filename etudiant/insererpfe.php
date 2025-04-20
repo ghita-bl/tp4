@@ -15,30 +15,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email_ex = $_POST['email_ex'];
     $encadrant_in_id = $_POST['encadrant_in_id'];
     
-    // Handle PDF upload
-    $rapport = '';
-    if (isset($_FILES['rapport']) && $_FILES['rapport']['error'] == 0) {
-        $file = $_FILES['rapport'];
-        if ($file['type'] == 'application/pdf') {
-            $upload_dir = '../uploads/pfes/';
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-            $filename = $etudiant_id . '_' . time() . '.pdf';
-            move_uploaded_file($file['tmp_name'], $upload_dir . $filename);
-            $rapport = $filename;
-        }
-    }
-
-    $sql = "INSERT INTO pfes (etudiant_id, titre, resume, organisme, encadrant_ex, email_ex, encadrant_in_id, rapport) 
-            VALUES ('$etudiant_id', '$titre', '$resume', '$organisme', '$encadrant_ex', '$email_ex', '$encadrant_in_id', '$rapport')";
-
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['msg'] = "PFE créé avec succès";
-        header("Location: ../pages/etudiant_portal.php");
-        exit();
+    // Validate that the encadrant_in_id exists in enseignants table
+    $check_encadrant = "SELECT id FROM enseignants WHERE id = '$encadrant_in_id'";
+    $result = mysqli_query($conn, $check_encadrant);
+    
+    if (mysqli_num_rows($result) == 0) {
+        $error = "L'encadrant interne sélectionné n'existe pas dans la base de données.";
     } else {
-        $error = "Erreur lors de la création: " . mysqli_error($conn);
+        // Handle PDF upload
+        $rapport = '';
+        if (isset($_FILES['rapport']) && $_FILES['rapport']['error'] == 0) {
+            $file = $_FILES['rapport'];
+            if ($file['type'] == 'application/pdf') {
+                $upload_dir = '../uploads/pfes/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+                $filename = $etudiant_id . '_' . time() . '.pdf';
+                move_uploaded_file($file['tmp_name'], $upload_dir . $filename);
+                $rapport = $filename;
+            }
+        }
+
+        $sql = "INSERT INTO pfes (etudiant_id, titre, resume, organisme, encadrant_ex, email_ex, encadrant_in_id, rapport) 
+                VALUES ('$etudiant_id', '$titre', '$resume', '$organisme', '$encadrant_ex', '$email_ex', '$encadrant_in_id', '$rapport')";
+
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['msg'] = "PFE créé avec succès";
+            header("Location: ../pages/etudiant_portal.php");
+            exit();
+        } else {
+            $error = "Erreur lors de la création: " . mysqli_error($conn);
+        }
     }
 }
 ?>
